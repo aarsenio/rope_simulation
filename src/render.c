@@ -23,27 +23,17 @@ static void	draw_black(void)
 
 static void	draw_line(double x1, double y1, double x2, double y2)
 {
-	double slope,b;
+	double	slope, b, minx, maxx, miny;
 
 	slope = (y2 - y1) / (x2 - x1);
 	b = y1 - (slope * x1);
-	if (x2 >= x1)
+	minx = ((x1 >= x2) * x2) + ((x1 < x2) * x1);
+	maxx = ((x1 <= x2) * x2) + ((x1 > x2) * x1);
+	while (minx <= maxx)
 	{
-		while (x1 <= x2)
-		{
-			y1 = slope * x1 + b;
-			mlx_draw_pixel(data()->mlx_img, x1, y1, 0xFFFFFF);
-			x1 = x1 + 0.01f;
-		}
-	}
-	else
-	{
-		while (x1 >= x2)
-		{
-			y1 = slope * x1 + b;
-			mlx_draw_pixel(data()->mlx_img, x1, y1, 0xFFFFFF);
-			x1 = x1 - 0.01f;
-		}
+		miny = slope * minx + b;
+		mlx_draw_pixel(data()->mlx_img, minx, miny, 0xFFFFFF);
+		minx = minx + 0.01f;
 	}
 }
 
